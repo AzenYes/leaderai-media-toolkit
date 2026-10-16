@@ -1,0 +1,39 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+private/
+.private/
+
+# Dependencies and caches
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.cache/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated media, local assets, render output, model weights
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.otf
+*.ttf
+*.woff
+*.woff2
+*.pt
+*.pth
+bundle/
+out/
+dist/
+剪辑成果/
+工作素材/
