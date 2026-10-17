@@ -9,18 +9,20 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 首个版本从口播创作出发，包含「文案」和「剪辑」两个 skill。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前工具包版本：**v1.0.0**。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑还需要本地视频处理环境。
+> 当前主分支版本：**v1.1.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑还需要本地视频处理环境。
 
 ## 现在能做什么
 
 | Skill | 安装标识 | 版本 | 输入 → 交付 |
 | --- | --- | --- | --- |
-| [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.0.0 | 一句话想法、选题或素材 → 口播逐字稿、3 个开头候选、标题与封面短句、录制提示、事实待补项 |
-| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.0.0 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明 |
+| [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.0 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
+| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.1.0 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；内置所需字体 |
 
 ### 口播文案
 
 支持教程、观点、测评、经验故事等内容，提供抖音、视频号、快手、小红书、B站、YouTube 等平台的适配参考。流程从受众与观看承诺出发，组织正文、开头和标题，再检查是否好念、是否兑现承诺、是否存在编造或夸大。
+
+每次写稿、改稿或出新版本，都会保存纯口播文案 `.txt` 和执行方案 `.md`。默认放在项目的 `口播文案输出/YYYYMMDD 主题/`，同名另存新版本，用户指定路径时优先使用指定路径。
 
 适合：有选题但不知道怎么讲、需要把长稿改成口语、只想改开头或某一段的创作者。
 
@@ -67,7 +69,7 @@ npx skills add https://github.com/AzenYes/leaderai-media-toolkit/tree/v1.0.0/ski
 git clone https://github.com/AzenYes/leaderai-media-toolkit.git
 ```
 
-将 `skills/` 下需要的**整个 skill 文件夹**复制到 Agent 支持的 skills 目录，保留 `references/`、`scripts/` 和 `motion-template/`。不要只复制 `SKILL.md`，也不要将整个工具包当作一个 skill 安装。
+将 `skills/` 下需要的**整个 skill 文件夹**复制到 Agent 支持的 skills 目录，保留 `references/`、`scripts/`、`assets/` 和 `motion-template/`。不要只复制 `SKILL.md`，也不要将整个工具包当作一个 skill 安装。
 
 如果你之前安装过中文名称的本地版本，请检查是否重复加载；公开版保留中文展示名称，使用上表中的英文安装标识。原有目录不会被本项目自动覆盖。
 
@@ -108,7 +110,7 @@ git clone https://github.com/AzenYes/leaderai-media-toolkit.git
 | FFmpeg / ffprobe | 音视频处理；字幕烧录需要含 `libass` 的构建 |
 | Node.js 22+ / npm | 安装和运行本版本动效模板及依赖 |
 | openai-whisper、numpy、jieba、fontTools | 中文语音识别、音频处理、断句与字体子集化 |
-| IBM Plex Sans SC、Noto Serif SC、Inter | 字幕和动效模板字体，需自行获取 |
+| IBM Plex Sans SC、Noto Serif SC、Inter | 完整字体已内置于剪辑 skill 的 `assets/fonts/`，附各字体许可 |
 | 可用的 Chromium / Remotion 浏览器 | 动效预览与渲染；首次运行可能下载浏览器 |
 
 安装 Python 依赖：
@@ -119,7 +121,9 @@ python -m pip install -r skills/lead-media-edit/requirements.txt
 
 复制动效模板到你的工作项目后，在副本中运行 `npm ci`。字体位置、案例启用方式见 [动效模板说明](skills/lead-media-edit/motion-template/README.md)。Whisper 首次运行会下载模型；中文使用多语种模型。GPU 可加速，实际耗时与素材长度、模型、画质和硬件有关。
 
-本仓库不附带用户原片、成片、字体文件、语音模型和 `node_modules`。完成安装不等于完成视频环境配置。
+字幕生成与最终合成默认使用内置 IBM Plex Sans SC SemiBold；动效字体通过 `scripts/subset_fonts.py <动效工程目录>` 按工程登记与实际用字生成子集，无需另行查找字体。完整字体共约 78 MiB，会增加仓库下载体积。
+
+本仓库不附带用户原片、成片、语音模型和 `node_modules`。完成安装不等于完成视频环境配置。
 
 ## 项目结构与后续扩展
 
@@ -137,6 +141,7 @@ leaderai-media-toolkit/
     └── lead-media-edit/
         ├── SKILL.md
         ├── requirements.txt
+        ├── assets/fonts/         完整字体及 OFL 许可
         ├── references/
         ├── scripts/
         └── motion-template/
@@ -148,4 +153,4 @@ leaderai-media-toolkit/
 
 本项目原创文档、工作流、脚本和模板采用 [MIT License](LICENSE)，允许使用、修改和分发，包括商业用途，须保留许可与版权声明。
 
-第三方依赖及资源遵循各自许可；本项目的 MIT 不替代 Remotion 的[许可条款](https://www.remotion.dev/docs/license)、字体许可或 FFmpeg 构建所附许可。随附地图数据的来源与完整许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+第三方依赖及资源遵循各自许可；本项目的 MIT 不替代 Remotion 的[许可条款](https://www.remotion.dev/docs/license)、字体许可或 FFmpeg 构建所附许可。随附地图数据与字体的来源及许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

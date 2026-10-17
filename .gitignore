@@ -18,6 +18,7 @@ venv/
 Thumbs.db
 .idea/
 .vscode/
+.code/
 
 # Generated media, local assets, render output, model weights
 *.mp4
@@ -30,6 +31,8 @@ Thumbs.db
 *.ttf
 *.woff
 *.woff2
+!skills/lead-media-edit/assets/fonts/*.otf
+!skills/lead-media-edit/assets/fonts/*.ttf
 *.pt
 *.pth
 bundle/

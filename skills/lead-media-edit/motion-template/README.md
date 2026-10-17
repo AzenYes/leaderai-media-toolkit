@@ -16,7 +16,7 @@ npm ci
 npm run typecheck
 ```
 
-在 `public/` 放入 `rough.mp4`。还需准备以下字体，由 skill 的 `scripts/subset_fonts.py` 按当前工程用字生成到 `public/fonts/`：
+在 `public/` 放入 `rough.mp4`。以下完整字体已随 skill 存放于 `assets/fonts/`，由 skill 的 `scripts/subset_fonts.py` 按当前工程用字生成到 `public/fonts/`：
 
 ```text
 NotoSerifSC-VF.ttf
@@ -26,13 +26,19 @@ Inter-Medium.ttf
 Inter-SemiBold.ttf
 ```
 
-官方来源：[IBM Plex](https://github.com/IBM/plex)、[Noto CJK](https://github.com/notofonts/noto-cjk)、[Inter](https://github.com/rsms/inter)。字体不在仓库内；下载或子集化后按字体许可保留声明。若下载文件名不同，需同步调整 `src/engine/fonts.ts`。缺少字体会中止渲染，不会静默换字体。
+在任意工作目录运行（两个路径均使用实际绝对路径）：
+
+```bash
+python <已安装skill目录>/scripts/subset_fonts.py <动效工程目录>
+```
+
+脚本默认从 skill 的 `assets/fonts/` 查找 `src/engine/fonts.ts` 登记的文件，无需传字体参数。官方来源：[IBM Plex](https://github.com/IBM/plex)、[Noto CJK](https://github.com/notofonts/noto-cjk)、[Inter](https://github.com/rsms/inter)。完整许可附在 `assets/fonts/OFL-*.txt`；分发字体或子集时保留相关许可及声明。增加字重时先在 `src/engine/fonts.ts` 登记，再重新子集化。缺少字体会中止渲染，不会静默换字体。
 
 修改 `src/project.ts` 和场景后，可运行 `npm run studio` 预览。仍需先准备视频与字体。实际视频制作、静帧检查、音效混合与最终导出按上一级 `SKILL.md` 执行。
 
 ## 启用「格陵兰没那么大」案例
 
-案例包含地图投影、三维地球与持续镜头场景，是代码示例；口播视频、字体和最终成片需自行提供。地图与示例数字在制作真实内容时仍应核实。
+案例包含地图投影、三维地球与持续镜头场景，是代码示例；口播视频和最终成片需自行提供，动效字体按上面的步骤生成。地图与示例数字在制作真实内容时仍应核实。
 
 在**工作副本**中按此映射复制并覆盖模板文件：
 

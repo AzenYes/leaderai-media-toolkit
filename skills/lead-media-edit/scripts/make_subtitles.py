@@ -2,10 +2,11 @@
 """成片字幕：校正文本 × 逐字时间戳 → 断句 → ASS（双层柔和阴影）+ SRT + 断句报告。
 
 python make_subtitles.py --words transcript_rough.json --text subtitle_text.txt --out-dir . \
-    --font IBMPlexSansSC-SemiBold.otf [--terms terms.txt] [--max-width 2296] [--fontname "IBM Plex Sans SC SmBld"]
+    [--font IBMPlexSansSC-SemiBold.otf] [--terms terms.txt] [--max-width 2296] [--fontname "IBM Plex Sans SC SmBld"]
 
 subtitle_text.txt：成片里实际说出的话（已改正识别错字、数字用阿拉伯数字），按句写，保留标点。
     可以省略不影响意思的口头填充词，但不能改写观点。
+--font 默认用本 skill 自带的 assets/fonts/IBMPlexSansSC-SemiBold.otf，无需每次查找字体位置。
 terms.txt（可选）：每行一个不允许被拆开的词（专有名词、成语、数字+单位）。
 
 断句规则（与 video-rough-cut 的字幕规范一致）：
@@ -24,6 +25,8 @@ import sys
 
 import jieba
 from fontTools.ttLib import TTFont
+
+DEFAULT_FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "fonts", "IBMPlexSansSC-SemiBold.otf")
 
 PUNCT = "，。！？；：、,.!?;:…—“”\"'‘’（）()《》 "
 STRONG_END = "。！？!?"
@@ -216,7 +219,7 @@ def main():
     ap.add_argument("--words", required=True)
     ap.add_argument("--text", required=True)
     ap.add_argument("--out-dir", required=True)
-    ap.add_argument("--font", required=True)
+    ap.add_argument("--font", default=os.path.normpath(DEFAULT_FONT))
     ap.add_argument("--fontname", default="IBM Plex Sans SC SmBld")
     ap.add_argument("--terms")
     ap.add_argument("--max-width", type=float, default=2296)
