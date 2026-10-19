@@ -1,0 +1,10 @@
+{
+  "name": "leaderai-media-toolkit",
+  "version": "1.3.0",
+  "description": "LeaderAI自媒体工具包：口播文案与口播剪辑 skill",
+  "author": { "name": "AzenYes", "url": "https://github.com/AzenYes" },
+  "homepage": "https://github.com/AzenYes/leaderai-media-toolkit",
+  "repository": "https://github.com/AzenYes/leaderai-media-toolkit",
+  "license": "MIT",
+  "keywords": ["自媒体", "口播", "文案", "剪辑", "remotion", "skills"]
+}

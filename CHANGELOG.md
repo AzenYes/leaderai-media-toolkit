@@ -2,7 +2,20 @@
 
 工具包按 Git 标签和 GitHub Release 发布；各 skill 的版本分别记录在其 `SKILL.md` 的 `metadata.version` 中。仅修改工具包文档时，不必同步提升所有 skill 的版本。
 
-## v1.2.0 — 2026-10-19（主分支）
+## v1.3.0 — 2026-10-19（主分支）
+
+改为以中文名分发，安装方式从 Skills CLI 换成 Claude Code 插件市场与手动安装。Skill 正文与脚本无变化：文案 **1.1.1**、剪辑 **1.2.1**。
+
+- 两个 skill 的 `name` 改为中文「Lead-自媒体口播文案」「Lead-自媒体口播剪辑」，文件夹名保持 `lead-media-script` / `lead-media-edit`。
+- 新增 `.claude-plugin/plugin.json` 与 `marketplace.json`：Claude Code 可用 `/plugin marketplace add AzenYes/leaderai-media-toolkit` 后安装 `leaderai-media-toolkit@leaderai`。
+- README 移除 Skills CLI（`npx skills add`）安装说明：该工具按 `name` 生成安装目录，中文名会使两个 skill 装进同一目录互相覆盖。Codex 及其他 Agent 改为手动复制英文文件夹。
+- CONTRIBUTING 同步命名与插件版本约定。
+
+**不兼容提示**：`npx skills add ... --skill lead-media-script` 等命令不再可用；已用 Skills CLI 安装的用户需删除旧目录后重装。
+
+验证：`claude plugin validate` 对插件清单、插件市场清单和两个 skill 均通过；在隔离配置中从本地路径添加插件市场并安装，两个 skill 以英文目录被识别。
+
+## v1.2.0 — 2026-10-19
 
 以本地最新的「Lead-自媒体口播剪辑」同步更新至 **1.2.0**；「Lead-自媒体口播文案」本地无新改动，保持 **1.1.0**。
 

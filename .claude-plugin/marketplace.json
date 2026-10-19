@@ -1,0 +1,13 @@
+{
+  "name": "leaderai",
+  "owner": { "name": "AzenYes", "url": "https://github.com/AzenYes" },
+  "metadata": { "description": "LeaderAI 自媒体创作工具" },
+  "plugins": [
+    {
+      "name": "leaderai-media-toolkit",
+      "source": "./",
+      "description": "LeaderAI自媒体工具包：口播文案与口播剪辑 skill",
+      "version": "1.3.0"
+    }
+  ]
+}

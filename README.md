@@ -9,14 +9,14 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 首个版本从口播创作出发，包含「文案」和「剪辑」两个 skill。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前主分支版本：**v1.2.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑还需要本地视频处理环境。
+> 当前主分支版本：**v1.3.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑还需要本地视频处理环境。
 
 ## 现在能做什么
 
-| Skill | 安装标识 | 版本 | 输入 → 交付 |
+| Skill | 目录 | 版本 | 输入 → 交付 |
 | --- | --- | --- | --- |
-| [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.0 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
-| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.0 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，内置所需字体 |
+| [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.1 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
+| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.1 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，内置所需字体 |
 
 ### 口播文案
 
@@ -34,34 +34,27 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 ## 安装
 
-### 使用 Skills CLI
+Skill 的 `name` 使用中文（「Lead-自媒体口播文案」「Lead-自媒体口播剪辑」），文件夹名保持英文。本项目不再通过 Skills CLI（`npx skills add`）分发：该工具会根据 `name` 生成安装目录，中文会被去掉，两个 skill 会装进同一个目录互相覆盖。
 
-先准备 Node.js / npm。下面的命令使用 [Vercel Skills CLI](https://github.com/vercel-labs/skills)，会让你选择 skill 和目标 Agent：
+### Claude Code：通过插件市场安装（推荐）
 
-```bash
-npx skills add AzenYes/leaderai-media-toolkit
+在 Claude Code 中依次运行：
+
+```text
+/plugin marketplace add AzenYes/leaderai-media-toolkit
+/plugin install leaderai-media-toolkit@leaderai
 ```
 
-只安装其中一个：
+两个 skill 会一起安装，重启 Claude Code 后生效。以后获取新版本：
 
-```bash
-npx skills add AzenYes/leaderai-media-toolkit --skill lead-media-script
-npx skills add AzenYes/leaderai-media-toolkit --skill lead-media-edit
+```text
+/plugin marketplace update leaderai
+/plugin update leaderai-media-toolkit@leaderai
 ```
 
-查看可用 skill（不安装）：
+也可以在终端里用 `claude plugin marketplace add AzenYes/leaderai-media-toolkit` 和 `claude plugin install leaderai-media-toolkit@leaderai` 完成同样的操作。
 
-```bash
-npx skills add AzenYes/leaderai-media-toolkit --list
-```
-
-需要固定首版时，可使用 GitHub 标签链接：
-
-```bash
-npx skills add https://github.com/AzenYes/leaderai-media-toolkit/tree/v1.0.0/skills/lead-media-script
-```
-
-### 手动安装
+### 手动安装（Codex 及其他 Agent）
 
 从 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases) 下载 ZIP，或克隆仓库：
 
@@ -69,9 +62,11 @@ npx skills add https://github.com/AzenYes/leaderai-media-toolkit/tree/v1.0.0/ski
 git clone https://github.com/AzenYes/leaderai-media-toolkit.git
 ```
 
-将 `skills/` 下需要的**整个 skill 文件夹**复制到 Agent 支持的 skills 目录，保留 `references/`、`scripts/`、`assets/` 和 `motion-template/`。不要只复制 `SKILL.md`，也不要将整个工具包当作一个 skill 安装。
+将 `skills/` 下需要的**整个 skill 文件夹**复制到 Agent 支持的 skills 目录（如 Claude Code 的 `~/.claude/skills/`），**保持英文文件夹名**，并保留 `references/`、`scripts/`、`assets/`、`motion-template/` 和 `agents/`。不要只复制 `SKILL.md`，也不要将整个工具包当作一个 skill 安装。
 
-如果你之前安装过中文名称的本地版本，请检查是否重复加载；公开版保留中文展示名称，使用上表中的英文安装标识。原有目录不会被本项目自动覆盖。
+Codex 的中文显示名由各 skill 的 `agents/openai.yaml` 提供。其他 Agent 若要求 `name` 只能使用小写英文，可能无法加载，请以该 Agent 的实际表现为准。
+
+如果之前用 Skills CLI 安装过本工具包（目录为 `lead-media-script` / `lead-media-edit`），或装过同名的本地中文版本，请先删除旧目录再按上面的方式重装，避免重复加载。
 
 ## 开始使用
 
@@ -80,7 +75,7 @@ git clone https://github.com/AzenYes/leaderai-media-toolkit.git
 **从想法写稿：**
 
 ```text
-请用 lead-media-script 写一份 60–90 秒的视频号口播稿。
+请用「Lead-自媒体口播文案」写一份 60–90 秒的视频号口播稿。
 主题：为什么普通人第一次录教程，总是卡在开头？
 受众：第一次录软件教程的人。
 语气：像和朋友聊天，不编造我的经历。
@@ -89,7 +84,7 @@ git clone https://github.com/AzenYes/leaderai-media-toolkit.git
 **给已有视频剪辑：**
 
 ```text
-请用 lead-media-edit 剪辑我提供的口播视频。
+请用「Lead-自媒体口播剪辑」剪辑我提供的口播视频。
 视频路径：<你的原片绝对路径>
 文案路径：<可选的文案路径>
 输出目录：<你的输出目录>
@@ -134,6 +129,7 @@ leaderai-media-toolkit/
 ├── CHANGELOG.md               工具包与各 skill 的版本记录
 ├── CONTRIBUTING.md            新增与维护 skill 的约定
 ├── THIRD_PARTY_NOTICES.md      第三方资源说明
+├── .claude-plugin/            Claude Code 插件与插件市场配置
 └── skills/
     ├── lead-media-script/
     │   ├── SKILL.md
@@ -147,7 +143,7 @@ leaderai-media-toolkit/
         └── motion-template/
 ```
 
-新增能力时，在 `skills/<新标识>/` 下加入独立的 `SKILL.md` 和所需资源，再更新上方目录及版本记录。工具包通过 Git 标签和 Release 发布，各 skill 在 `SKILL.md` 的 `metadata.version` 中记录自身版本。扩展约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+新增能力时，在 `skills/<英文目录>/` 下加入独立的 `SKILL.md` 和所需资源，再更新上方目录、插件版本及版本记录。工具包通过 Git 标签和 Release 发布，各 skill 在 `SKILL.md` 的 `metadata.version` 中记录自身版本。扩展约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可证
 
