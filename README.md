@@ -9,14 +9,14 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 首个版本从口播创作出发，包含「文案」和「剪辑」两个 skill。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前主分支版本：**v1.1.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑还需要本地视频处理环境。
+> 当前主分支版本：**v1.2.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑还需要本地视频处理环境。
 
 ## 现在能做什么
 
 | Skill | 安装标识 | 版本 | 输入 → 交付 |
 | --- | --- | --- | --- |
 | [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.0 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
-| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.1.0 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；内置所需字体 |
+| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.0 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，内置所需字体 |
 
 ### 口播文案
 
@@ -28,7 +28,7 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 ### 口播剪辑
 
-使用 FFmpeg、Whisper 和 Remotion，把原始口播整理成视频。包含保留片段清单、重复起句识别、讲解分镜、动效模板、字幕断句和成片质量检查。默认采用 1920×1080 横屏设计画布，可按流程渲染 4K；竖屏需要相应调整布局。
+使用 FFmpeg、Whisper 和 Remotion，把原始口播整理成视频。包含保留片段清单、重复起句识别、讲解分镜、动效模板、字幕断句和成片质量检查。默认采用 1920×1080 横屏设计画布，可按流程渲染 4K；竖版（1080×1920）有专门布局：人物圆环放在上部一角，字幕上移到距底部约 1/3 处，避开平台底部信息区和右侧按钮列。
 
 适合：已录好视频，希望由具备本地文件和命令执行能力的 AI Agent 完成剪辑与包装的创作者。
 

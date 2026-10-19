@@ -4,8 +4,8 @@
 
 ## 通用模板
 
-- `src/engine/`：人物全屏与圆环切换、缓动、字体加载、配色、颗粒及音效类型。
-- `src/project.ts`：视频文件名、帧率、时长、人物位置与人物状态切换时间。
+- `src/engine/`：人物全屏与圆环切换（横版右下、竖版上部一角）、缓动、字体加载、配色、颗粒及音效类型；`theme.ts` 给出画布尺寸与人物、字幕、平台界面的占位区，随 `ORIENTATION` 切换。
+- `src/project.ts`：视频文件名、帧率、时长、画幅 `ORIENTATION`（`"landscape"` / `"vertical"`）、竖版圆环位置 `PIP_CORNER`（`"tr"` / `"tl"`）、人物位置与人物状态切换时间。
 - `src/scenes/`：当前视频的讲解场景；`Example.tsx` 为最小示例。
 - `src/sfx.json`：音效时间表。最终音频按 skill 的 Python 脚本离线混合。
 

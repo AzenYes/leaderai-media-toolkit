@@ -2,7 +2,14 @@
 """成片字幕：校正文本 × 逐字时间戳 → 断句 → ASS（双层柔和阴影）+ SRT + 断句报告。
 
 python make_subtitles.py --words transcript_rough.json --text subtitle_text.txt --out-dir . \
-    [--font IBMPlexSansSC-SemiBold.otf] [--terms terms.txt] [--max-width 2296] [--fontname "IBM Plex Sans SC SmBld"]
+    [--layout landscape|vertical] [--font IBMPlexSansSC-SemiBold.otf] [--terms terms.txt] [--max-width N]
+    [--pos-y N] [--fontname "IBM Plex Sans SC SmBld"]
+
+--layout 画幅（默认 landscape）：
+- landscape：3840×2160 画布，字号 192，底部居中（底边 y=2048），单行最宽 2296px（避开右下人物圆环）。
+- vertical：2160×3840 画布，字号 144，字幕底边落在距底部约 1/3 处（y=2560），单行最宽 1560px
+  （右端停在 x≈1860，避开平台右侧点赞/评论按钮列；底部约 1/4 是平台作者名/标题区，不放字幕）。
+--max-width / --pos-y 可覆盖对应画幅的默认值（单位：ASS 画布像素；pos-y 是字幕底边位置）。
 
 subtitle_text.txt：成片里实际说出的话（已改正识别错字、数字用阿拉伯数字），按句写，保留标点。
     可以省略不影响意思的口头填充词，但不能改写观点。
@@ -13,7 +20,7 @@ terms.txt（可选）：每行一个不允许被拆开的词（专有名词、�
 - 任一时刻只有一行；ASS 禁用自动换行（WrapStyle=2 + \\q2），SRT 正文也只有一行。
 - 先按句号/问号/感叹号分句，句内在标点或词边界上做动态规划切分：
   优先在标点处断，不拆专有名词/成语/数字+单位，不把“的/了/呢/吗”等虚词甩到下一行开头，
-  避免 1–3 个字的孤行，单行宽度按真实字体字宽计算，不超过 max-width（3840 设计画布像素）。
+  避免 1–3 个字的孤行，单行宽度按真实字体字宽计算，不超过 max-width（ASS 画布像素）。
 - 每条字幕的起止取自该行首字/末字的真实时间，不按字数估算。
 """
 import argparse
@@ -36,18 +43,24 @@ UNIT_AFTER_NUM = set("倍度年多万亿%岁个次米")
 
 ASS_HEAD = """[Script Info]
 ScriptType: v4.00+
-PlayResX: 3840
-PlayResY: 2160
+PlayResX: {resx}
+PlayResY: {resy}
 WrapStyle: 2
 ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,{font},192,&H00FFFFFF,&H00FFFFFF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,4.5,0,2,640,640,112,1
+Style: Default,{font},{size},&H00FFFFFF,&H00FFFFFF,&H00101010,&H80000000,0,0,0,0,100,100,0,0,1,{outline},0,2,{margin},{margin},112,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
+
+# 画幅预设：ASS 画布、字号、描边、阴影模糊与偏移、字幕底边中心位置、单行最大宽度
+LAYOUTS = {
+    "landscape": dict(resx=3840, resy=2160, size=192, outline=4.5, blur=8, shx=6, shy=8, x=1920, y=2048, max_width=2296),
+    "vertical": dict(resx=2160, resy=3840, size=144, outline=3.4, blur=6, shx=4.5, shy=6, x=1080, y=2560, max_width=1560),
+}
 
 
 def ts_ass(t):
@@ -222,7 +235,9 @@ def main():
     ap.add_argument("--font", default=os.path.normpath(DEFAULT_FONT))
     ap.add_argument("--fontname", default="IBM Plex Sans SC SmBld")
     ap.add_argument("--terms")
-    ap.add_argument("--max-width", type=float, default=2296)
+    ap.add_argument("--layout", choices=sorted(LAYOUTS), default="landscape")
+    ap.add_argument("--max-width", type=float)
+    ap.add_argument("--pos-y", type=float)
     ap.add_argument("--name", default="字幕")
     a = ap.parse_args()
 
@@ -231,7 +246,13 @@ def main():
         terms = [x.strip() for x in open(a.terms, encoding="utf-8") if x.strip()]
     for term in terms:
         jieba.add_word(term, freq=2_000_000)
-    metric = Metric(a.font)
+    L = dict(LAYOUTS[a.layout])
+    if a.max_width:
+        L["max_width"] = a.max_width
+    if a.pos_y:
+        L["y"] = a.pos_y
+    a.max_width = L["max_width"]
+    metric = Metric(a.font, L["size"])
 
     raw = open(a.text, encoding="utf-8").read()
     raw = re.sub(r"\s+", "", raw)
@@ -282,12 +303,14 @@ def main():
     ass_path = os.path.join(a.out_dir, f"{a.name}.ass")
     srt_path = os.path.join(a.out_dir, f"{a.name}.srt")
     with open(ass_path, "w", encoding="utf-8") as f:
-        f.write(ASS_HEAD.format(font=a.fontname))
+        f.write(ASS_HEAD.format(font=a.fontname, resx=L["resx"], resy=L["resy"], size=L["size"],
+                                outline=L["outline"], margin=round((L["resx"] - L["max_width"]) / 2)))
+        x, y, sx, sy = L["x"], L["y"], L["x"] + L["shx"], L["y"] + L["shy"]
         for ln in lines:
             s, e, txt = ts_ass(ln["s"]), ts_ass(ln["e"]), ln["text"]
-            f.write(f"Dialogue: 0,{s},{e},Default,,0,0,0,,{{\\q2\\pos(1926,2056)\\1c&H000000&\\1a&HB0&"
-                    f"\\3c&H000000&\\3a&HB0&\\shad0\\blur8}}{txt}\n")
-            f.write(f"Dialogue: 1,{s},{e},Default,,0,0,0,,{{\\q2\\pos(1920,2048)}}{txt}\n")
+            f.write(f"Dialogue: 0,{s},{e},Default,,0,0,0,,{{\\q2\\pos({sx:g},{sy:g})\\1c&H000000&\\1a&HB0&"
+                    f"\\3c&H000000&\\3a&HB0&\\shad0\\blur{L['blur']:g}}}{txt}\n")
+            f.write(f"Dialogue: 1,{s},{e},Default,,0,0,0,,{{\\q2\\pos({x:g},{y:g})}}{txt}\n")
     with open(srt_path, "w", encoding="utf-8") as f:
         for i, ln in enumerate(lines, 1):
             f.write(f"{i}\n{ts_srt(ln['s'])} --> {ts_srt(ln['e'])}\n{ln['text']}\n\n")
@@ -295,7 +318,7 @@ def main():
     # 断句报告：供人工复核
     rep = os.path.join(a.out_dir, f"{a.name}_断句检查.txt")
     with open(rep, "w", encoding="utf-8") as f:
-        f.write(f"文本与识别对齐率：{ratio:.1%}\n最大行宽：{a.max_width:.0f}px（3840 画布）\n\n")
+        f.write(f"文本与识别对齐率：{ratio:.1%}\n画幅：{a.layout}（{L['resx']}×{L['resy']} 画布，字号 {L['size']}，字幕底边 y={L['y']:g}）\n最大行宽：{a.max_width:.0f}px\n\n")
         for i, ln in enumerate(lines, 1):
             dur = ln["e"] - ln["s"]
             cps = len(ln["text"].replace(" ", "")) / max(dur, 0.01)

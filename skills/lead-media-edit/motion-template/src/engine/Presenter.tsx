@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, OffthreadVideo, staticFile } from "remotion";
 import { E, clamp, invLerp, lerp } from "./ease";
-import { C, PIP } from "./theme";
+import { C, H, PIP, W } from "./theme";
 
 export type Mode = { t: number; mode: "full" | "pip"; dur?: number };
 
@@ -70,8 +70,8 @@ export const Presenter: React.FC<{
             position: "absolute",
             left: 0,
             top: 0,
-            width: 1920,
-            height: 1080,
+            width: W,
+            height: H,
             transform: `translate(${tx}px, ${ty}px) scale(${s})`,
             transformOrigin: "0 0",
           }}

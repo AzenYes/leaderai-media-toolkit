@@ -1,4 +1,4 @@
-// 每条视频改这里：素材、时长、人物位置、人物状态切换、音效表（时间为粗剪成片秒数）
+// 每条视频改这里：素材、时长、画幅、人物位置、人物状态切换、音效表（时间为粗剪成片秒数）
 import type { Mode } from "./engine/Presenter";
 import type { Cue } from "./engine/Sfx";
 import sfx from "./sfx.json";
@@ -6,7 +6,11 @@ import sfx from "./sfx.json";
 export const FPS = 60000 / 1001; // 与 rough.mp4 一致
 export const DURATION = 10; // rough.mp4 时长（秒）
 export const VIDEO = "rough.mp4"; // public/rough.mp4
-// 原画面中人物头肩中心与半径（1920×1080 设计坐标）：抽帧确认
+// 画幅：横版 1920×1080 设计画布；竖版 1080×1920（发抖音/视频号/小红书等竖屏平台）
+export const ORIENTATION: "landscape" | "vertical" = "landscape";
+// 竖版人物圆环放在上部哪一角："tr" 右上（默认）/"tl" 左上；横版固定右下，忽略此项
+export const PIP_CORNER: "tr" | "tl" = "tr";
+// 原画面中人物头肩中心与半径（当前画幅的设计坐标）：抽帧确认
 export const FACE = { x: 960, y: 470, r: 300 };
 
 export const MODES: Mode[] = [

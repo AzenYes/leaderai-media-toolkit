@@ -6,6 +6,9 @@ import sfx from "./sfx.json";
 export const FPS = 60000 / 1001;
 export const DURATION = 49.7831;
 export const VIDEO = "rough.mp4";
+// 画幅：本案例为横版（src/engine/theme.ts 依赖这两项）
+export const ORIENTATION: "landscape" | "vertical" = "landscape";
+export const PIP_CORNER: "tr" | "tl" = "tr";
 // 原画面中人物头肩的位置与半径（1920×1080 设计坐标），用于缩成圆环时取景
 export const FACE = { x: 982, y: 470, r: 300 };
 
