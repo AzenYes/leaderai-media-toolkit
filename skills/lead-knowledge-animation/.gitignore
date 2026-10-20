@@ -1,0 +1,9 @@
+# 字体不进 git：下载地址见 assets/fonts/fonts.json，首次使用时 scripts/fonts.py --fetch 自动下载
+assets/fonts/*.otf
+assets/fonts/*.ttf
+assets/fonts/*.ttc
+assets/fonts/*.woff
+assets/fonts/*.woff2
+# 配套 BGM 也单独分发
+assets/music/*.mp3
+assets/music/*.wav

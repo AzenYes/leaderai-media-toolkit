@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>film</title>
+<!--
+  布线示例（wiring）：演示发光线描式知识动画的基本接法——
+  字幕时间轴(timing.js，timeline.py 生成) + kit.js 六层结构 + 一句一个视觉节拍 + 冷开场 → 片名卡。
+  这里的金色配色、三柱站台、人形只是“接法示范”：主色相、主体、构图都必须按本片重设。
+  大片子按章节拆成 s1.js / s2.js …（每个文件往 SCENES 里 push 一个 (t)=>{}）。风格说明见 references/风格范式.md。
+-->
+<style>
+  <!-- @fonts -->
+  /* ↑ new_film.mjs 在这里写入 @font-face：'Plex' = IBM Plex Sans SC（100/200/300/400/450/500/600/700），'HanSerif' = 思源宋体 SC（200/300/400/500/600/700/900）。不要叫 'Serif'：会被当成通用 serif */
+  html, body { margin: 0; background: #000; overflow: hidden; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="world"></div></div>
+<script src="motion.js"></script>
+<script src="kit.js"></script>
+<!-- 需要地图/地球时：<script src="world110.js"></script><script src="geo.js"></script>，然后 const G = Geo(K); -->
+<script src="timing.js"></script>   <!-- timeline.py 生成：TIMING.total、L.<句id>.start/.end -->
+<script>
+// ── 画幅：?ratio=9x16 / 1x1 / 16x9（同一条时间线，按宽高重新排版，而不是裁切）
+const RATIO = (new URLSearchParams(location.search).get('ratio') || '16x9');
+const SIZES = { '16x9': [1920, 1080], '9x16': [1080, 1920], '1x1': [1440, 1440], '4x5': [1080, 1350] };
+const [W, H] = SIZES[RATIO] || SIZES['16x9'];
+const FPS = 60, DUR = TIMING.total, CX = W / 2;
+const stage = document.getElementById('stage');
+const { prog, ease: E, lerp, clamp } = M;
+const SCENES = [];   // 各章节文件往这里 push (t) => {}
+
+// ── 视觉系统（按本片重设）：近黑底 + 一个主色相 + 一个对立色
+const K = Kit({ W, H, stage, duration: DUR, seed: 7, vignette: .6,
+  palette: { bg: '#05060a', ink: '#eef0f6', accent: '#ffc14d', accent2: '#8fb4ff' } });
+K.amb.keys([
+  [0, { haze: 0, dust: .3 }],
+  [1.5, { haze: .12, dust: .5, bokeh: .25, stars: .1 }],
+  [DUR, { haze: .12, dust: .5, bokeh: .25, stars: .1 }],
+]);
+K.hud.show = false;                       // 默认不显示角标；需要时自己加左上角极小的章节英文名
+K.caption.set(TIMING.lines);              // 底部单行字幕 52px（字体按内容选：Plex Medium 或 思源宋体 SemiBold，lines.json 里 "font" 指定；[强调] 加粗+主色）；hook 句画面大字；card 句不进字幕带
+
+const o1 = L.o1 || TIMING.lines[0], o2 = L.o2 || TIMING.lines[1] || o1, T = L.T || TIMING.lines[2] || o2;
+
+// ── 片名卡（DOM）：宋体发光大字 + 英文小字 + 一句问题
+const title = K.text(K.world, '片名', { x: 0, y: H * .33, size: 160, w: 900, align: 'c', ls: '.1em' });
+title.style.fontFamily = 'HanSerif'; K.glowTitle(title, { color: K.P.accent2 });
+const en = K.text(K.world, '<ENGLISH SUBTITLE>', { x: 0, y: H * .29, size: 32, align: 'c' });
+const q = K.text(K.world, '一句问题，就是全片要回答的？', { x: 0, y: H * .56, size: 40, w: 400, align: 'c' }); q.style.fontFamily = 'HanSerif';
+
+// ── 场景 1：冷开场（一个具体的人，一个瞬间）
+SCENES.push((t) => {
+  const on = 1 - prog(t, T.start - .4, T.start, E.inCubic); if (on <= 0) return;
+  const c = K.ctx; c.save(); c.globalAlpha = on;
+  K.ghost(c, '问题', CX, H * .5, H * .5, .04 * prog(t, o2.start, o2.start + 1), 900, 'HanSerif');   // 巨字虚影
+  const pods = [[CX - 260, H * .78, 140, 'A', '#9fb3d6'], [CX, H * .72, 200, 'B', K.P.accent], [CX + 260, H * .82, 100, 'C', '#d08a5c']];
+  pods.forEach(([x, y, h, n, col], i) => {
+    const lit = prog(t, o1.start + i * .25, o1.start + i * .25 + .6, E.outCubic);
+    K.spotlight(c, x, -40, Math.PI / 2, .3, y + 60, .28 * lit, col);
+    const g = c.createLinearGradient(0, y, 0, y + h + 200); g.addColorStop(0, K.rgba(col, .5 * lit)); g.addColorStop(1, K.rgba(col, 0));
+    c.fillStyle = g; c.fillRect(x - 110, y, 220, H - y); c.strokeStyle = K.rgba(col, .8 * lit); c.lineWidth = 1.5; c.strokeRect(x - 110, y, 220, H - y + 10);
+    c.font = '700 72px Plex'; c.textAlign = 'center'; c.fillStyle = K.rgba(col, .85 * lit); c.fillText(n, x, y + 90);
+  });
+  // 主体动作：两侧的人举臂，居中的站着不动——动作对比就是这句话的意思
+  const up = prog(t, o2.start, o2.start + .6, E.outBack);
+  K.figure(c, CX - 260, H * .78, 1, 'stand', 0, { color: '#cfdcf5', a: prog(t, o1.start, o1.start + .6) });
+  K.figure(c, CX, H * .72, 1.1, up > .5 ? 'win' : 'stand', 0, { color: '#ffd27a', core: true, a: prog(t, o1.start + .25, o1.start + .85) });
+  K.figure(c, CX + 260, H * .82, .95, up > .5 ? 'win' : 'stand', 0, { color: '#ffb27a', a: prog(t, o1.start + .5, o1.start + 1.1) });
+  K.callout(c, CX - 260, H * .78 - 200, -120, -40, 'LABEL', prog(t, o2.start + .6, o2.start + 1.4), { sub: '示意标注', len: 110 });
+  c.restore();
+});
+
+// ── 场景 2：片名卡（粒子聚合 + 同心光环 + 发光宋体）
+const PTS = K.sample((x, w, h) => { x.lineWidth = 3; for (let r = 60; r < 240; r += 50) { x.beginPath(); x.ellipse(w / 2, h / 2, r * 2.2, r * .5, 0, 0, 7); x.stroke(); } }, { w: 1200, h: 300, step: 7 });
+SCENES.push((t) => {
+  const a = prog(t, T.start - .3, T.start + .4) * (1 - prog(t, T.end - .2, T.end + .3));
+  if (a > 0) K.particles(K.ctx, PTS, CX, H * .5, prog(t, T.start - .3, T.start + 1.2), { spread: 700, size: 1.6, color: 'white', a: a * .6, t });
+  title.reveal(t, T.start, { mode: 'center', dur: .9, stagger: .06 }); title.hide(t, T.end, { dur: .4 });
+  en.reveal(t, T.start + .4, { dur: .6 }); en.hide(t, T.end, { dur: .3 });
+  q.reveal(t, T.start + .9, { mode: 'ink', dur: .3, stagger: 1 / 16 }); q.hide(t, T.end, { dur: .3 });
+});
+K.flash(T.start, .2, .6); K.flare(T.start + .05, CX, H * .42, .8, 1.6);
+
+function render(t) {
+  K.begin(t);
+  for (const s of SCENES) s(t);
+  K.end(t);
+}
+
+M.film({
+  width: W, height: H, fps: FPS, duration: DUR, stage, render,
+  scenes: TIMING.lines.map((l, i) => ({ id: l.id, start: l.start, end: TIMING.lines[i + 1]?.start ?? DUR, label: l.id })),
+  cues: [
+    { t: o1.start, sfx: 'swish', gain: -12 },
+    { t: o2.start, sfx: 'thump', gain: -8 },
+    { t: T.start, sfx: 'riser', align: 'end', gain: -10 },
+    { t: T.start, sfx: 'impact', gain: -4 },
+  ],
+});
+</script>
+</body>
+</html>

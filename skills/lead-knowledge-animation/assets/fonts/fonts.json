@@ -1,0 +1,111 @@
+{
+ "_说明": "字体不随 skill 分发（不进 git）。fonts.py --fetch 按这里的地址下载到用户数据目录；均为 SIL OFL 1.1。",
+ "families": {
+  "Plex": {
+   "name": "IBM Plex Sans SC",
+   "version": "1.1.0",
+   "license": "SIL OFL 1.1",
+   "home": "https://github.com/IBM/plex",
+   "release": "https://github.com/IBM/plex/releases/tag/%40ibm%2Fplex-sans-sc%401.1.0"
+  },
+  "HanSerif": {
+   "name": "思源宋体 Source Han Serif SC",
+   "version": "2.003R",
+   "license": "SIL OFL 1.1",
+   "home": "https://github.com/adobe-fonts/source-han-serif",
+   "release": "https://github.com/adobe-fonts/source-han-serif/releases/tag/2.003R"
+  }
+ },
+ "fonts": [
+  {
+   "file": "IBMPlexSansSC-Thin.otf",
+   "family": "Plex",
+   "weight": 100,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Thin.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-ExtraLight.otf",
+   "family": "Plex",
+   "weight": 200,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-ExtraLight.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-Light.otf",
+   "family": "Plex",
+   "weight": 300,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Light.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-Regular.otf",
+   "family": "Plex",
+   "weight": 400,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Regular.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-Text.otf",
+   "family": "Plex",
+   "weight": 450,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Text.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-Medium.otf",
+   "family": "Plex",
+   "weight": 500,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Medium.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-SemiBold.otf",
+   "family": "Plex",
+   "weight": 600,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-SemiBold.otf"
+  },
+  {
+   "file": "IBMPlexSansSC-Bold.otf",
+   "family": "Plex",
+   "weight": 700,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Bold.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-ExtraLight.otf",
+   "family": "HanSerif",
+   "weight": 200,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-ExtraLight.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-Light.otf",
+   "family": "HanSerif",
+   "weight": 300,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-Light.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-Regular.otf",
+   "family": "HanSerif",
+   "weight": 400,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-Regular.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-Medium.otf",
+   "family": "HanSerif",
+   "weight": 500,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-Medium.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-SemiBold.otf",
+   "family": "HanSerif",
+   "weight": 600,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-SemiBold.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-Bold.otf",
+   "family": "HanSerif",
+   "weight": 700,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-Bold.otf"
+  },
+  {
+   "file": "SourceHanSerifSC-Heavy.otf",
+   "family": "HanSerif",
+   "weight": 900,
+   "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/2.003R/OTF/SimplifiedChinese/SourceHanSerifSC-Heavy.otf"
+  }
+ ]
+}

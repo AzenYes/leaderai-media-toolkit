@@ -2,7 +2,20 @@
 
 工具包按 Git 标签和 GitHub Release 发布；各 skill 的版本分别记录在其 `SKILL.md` 的 `metadata.version` 中。仅修改工具包文档时，不必同步提升所有 skill 的版本。
 
-## v1.3.0 — 2026-10-19（主分支）
+## v1.4.0 — 2026-10-20（主分支）
+
+新增第三个 skill「Lead-知识讲解动画」**1.0.0**（`lead-knowledge-animation`）；「Lead-自媒体口播文案」**1.1.1**、「Lead-自媒体口播剪辑」**1.2.1** 无变化。
+
+- 新增 `skills/lead-knowledge-animation/`：从一个知识选题或一句想法，做出发光线描式知识讲解动画（MP4，无配音）。包含 `SKILL.md` 工作流、10 份参考文档（风格范式、叙事与字幕、视觉系统、丰富度与设计秩序、主体与视觉想法、运动语言、工程契约、审片与修改、声音、选题配方）、15 个脚本（建工程 `new_film.mjs`、渲染 `render.mjs`、时间轴 `timeline.py`、审片包 `review_pack.py`、音效与混音 `sfx.py` / `mix.py`、质检 `qa_video.py` 等）和起手件（`motion.js`、`kit.js`、`geo.js`、`index.html`）。
+- 字幕规范固定：底部居中、单行、句末无标点；按内容在 IBM Plex Sans SC 与思源宋体之间二选一；开头 5 秒大字金句。
+- 字体不随仓库分发：`assets/fonts/fonts.json` 只含下载清单，首次使用时 `fonts.py --fetch` 自动下载（约 220 MB，SIL OFL 1.1）；仓库及 skill 内 `.gitignore` 均不收录字体与音频文件。
+- 配套 BGM 另行分发：skill 只带 `music.json` 与 `bgm.py`；本机没有配套曲时 skill 不会向用户提这首曲子。
+- 新增 `skills/lead-knowledge-animation/requirements.txt`（numpy、scipy、fonttools）。内置 Natural Earth 110m 世界地图点阵数据（公有领域），已写入 THIRD_PARTY_NOTICES。
+- README 新增该 skill 的介绍、使用示例、环境要求与目录结构，并把「两个 skill」的表述更新为三个；插件清单与市场清单版本升至 1.4.0，描述加入知识讲解动画；CONTRIBUTING 补充「字体与音频不入库、首次使用时下载」的约定。
+
+验证：已核对随附文件无作者机器绝对路径和凭据；`fonts.json` 中抽查的 IBM Plex Sans SC 与思源宋体下载地址可访问（HTTP 200）；复制时仅统一了换行符为 LF，正文与脚本内容未改，仅在 `SKILL.md` frontmatter 中补充 `license` 与 `metadata.version`。本次未重新渲染完整成片，也未在隔离环境中重新运行 `claude plugin validate`。
+
+## v1.3.0 — 2026-10-19
 
 改为以中文名分发，安装方式从 Skills CLI 换成 Claude Code 插件市场与手动安装。Skill 正文与脚本无变化：文案 **1.1.1**、剪辑 **1.2.1**。
 
