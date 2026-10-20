@@ -1,0 +1,42 @@
+{
+ "_说明": "大体积字体不随 skill 分发（不进 git）。scripts/fetch_fonts.py 按这里的地址下载到 assets/fonts/；均为 SIL OFL 1.1。Inter 体积很小，随 skill 分发，不在此列。",
+ "families": {
+  "Plex": {
+   "name": "IBM Plex Sans SC",
+   "version": "1.1.0",
+   "license": "SIL OFL 1.1",
+   "home": "https://github.com/IBM/plex",
+   "release": "https://github.com/IBM/plex/releases/tag/%40ibm%2Fplex-sans-sc%401.1.0"
+  },
+  "NotoSerif": {
+   "name": "Noto Serif SC（可变字体 200–900）",
+   "version": "2.003",
+   "license": "SIL OFL 1.1",
+   "home": "https://github.com/notofonts/noto-cjk",
+   "release": "https://github.com/notofonts/noto-cjk/tree/Serif2.003/Serif/Variable/TTF/Subset"
+  }
+ },
+ "fonts": [
+  {"file": "IBMPlexSansSC-SemiBold.otf", "family": "Plex", "weight": 600, "default": true,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-SemiBold.otf",
+   "sha256": "084caa92edc0409fc58fce557a9402bd593eef64257974a94c0491722ce8bdcc"},
+  {"file": "IBMPlexSansSC-Medium.otf", "family": "Plex", "weight": 500, "default": true,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Medium.otf",
+   "sha256": "94a5126f3078ee08272ea9bb2809dafec288cbf0fc75f73978f30372c93b4327"},
+  {"file": "NotoSerifSC-VF.ttf", "family": "NotoSerif", "weight": "200-900", "default": true,
+   "url": "https://github.com/notofonts/noto-cjk/raw/Serif2.003/Serif/Variable/TTF/Subset/NotoSerifSC-VF.ttf",
+   "sha256": "5326cfb097e3ab26fcb39329752b5c0a439bf8d5c4649520e4b492939c352a09"},
+  {"file": "IBMPlexSansSC-Thin.otf", "family": "Plex", "weight": 100, "default": false,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Thin.otf"},
+  {"file": "IBMPlexSansSC-ExtraLight.otf", "family": "Plex", "weight": 200, "default": false,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-ExtraLight.otf"},
+  {"file": "IBMPlexSansSC-Light.otf", "family": "Plex", "weight": 300, "default": false,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Light.otf"},
+  {"file": "IBMPlexSansSC-Regular.otf", "family": "Plex", "weight": 400, "default": false,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Regular.otf"},
+  {"file": "IBMPlexSansSC-Text.otf", "family": "Plex", "weight": 450, "default": false,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Text.otf"},
+  {"file": "IBMPlexSansSC-Bold.otf", "family": "Plex", "weight": 700, "default": false,
+   "url": "https://raw.githubusercontent.com/IBM/plex/%40ibm/plex-sans-sc%401.1.0/packages/plex-sans-sc/fonts/complete/otf/unhinted/IBMPlexSansSC-Bold.otf"}
+ ]
+}

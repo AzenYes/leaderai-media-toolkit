@@ -9,14 +9,14 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 工具包从口播创作出发，现包含「口播文案」「口播剪辑」「知识讲解动画」三个 skill：前两个处理有人出镜的口播，第三个从一个选题直接做出无需配音、无需素材的讲解动画。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前主分支版本：**v1.4.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
+> 当前主分支版本：**v1.4.1**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
 
 ## 现在能做什么
 
 | Skill | 目录 | 版本 | 输入 → 交付 |
 | --- | --- | --- | --- |
 | [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.1 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
-| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.1 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，内置所需字体 |
+| [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.2 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，所需字体首次使用时自动下载 |
 | [Lead-知识讲解动画](skills/lead-knowledge-animation/SKILL.md) | `lead-knowledge-animation` | 1.0.0 | 一个知识选题或一句想法 → 发光线描式讲解动画 MP4（无配音，底部单行字幕即旁白，配音乐与音效）、字幕稿、分镜与出处记录、可再修改的动画工程 |
 
 ### 口播文案
@@ -132,7 +132,7 @@ Codex 的中文显示名由各 skill 的 `agents/openai.yaml` 提供。其他 Ag
 | FFmpeg / ffprobe | 音视频处理；字幕烧录需要含 `libass` 的构建 |
 | Node.js 22+ / npm | 安装和运行本版本动效模板及依赖 |
 | openai-whisper、numpy、jieba、fontTools | 中文语音识别、音频处理、断句与字体子集化 |
-| IBM Plex Sans SC、Noto Serif SC、Inter | 完整字体已内置于剪辑 skill 的 `assets/fonts/`，附各字体许可 |
+| IBM Plex Sans SC、Noto Serif SC、Inter | Inter 与各字体许可随剪辑 skill 分发；IBM Plex、Noto Serif SC 首次使用时自动下载到 `assets/fonts/`（约 40 MB，只下一次） |
 | 可用的 Chromium / Remotion 浏览器 | 动效预览与渲染；首次运行可能下载浏览器 |
 
 安装 Python 依赖：
@@ -143,7 +143,7 @@ python -m pip install -r skills/lead-media-edit/requirements.txt
 
 复制动效模板到你的工作项目后，在副本中运行 `npm ci`。字体位置、案例启用方式见 [动效模板说明](skills/lead-media-edit/motion-template/README.md)。Whisper 首次运行会下载模型；中文使用多语种模型。GPU 可加速，实际耗时与素材长度、模型、画质和硬件有关。
 
-字幕生成与最终合成默认使用内置 IBM Plex Sans SC SemiBold；动效字体通过 `scripts/subset_fonts.py <动效工程目录>` 按工程登记与实际用字生成子集，无需另行查找字体。完整字体共约 78 MiB，会增加仓库下载体积。
+字幕生成与最终合成默认使用 IBM Plex Sans SC SemiBold；动效字体通过 `scripts/subset_fonts.py <动效工程目录>` 按工程登记与实际用字生成子集。字体不随仓库分发，脚本发现缺失会自动下载；也可提前运行 `python skills/lead-media-edit/scripts/fetch_fonts.py --fetch`，网络不通时的手动安装方法见 [字体说明](skills/lead-media-edit/assets/fonts/README.md)。
 
 知识讲解动画 skill 同样需要能读写本地文件和运行命令的 Agent，以及：
 
@@ -181,7 +181,7 @@ leaderai-media-toolkit/
     ├── lead-media-edit/
     │   ├── SKILL.md
     │   ├── requirements.txt
-    │   ├── assets/fonts/         完整字体及 OFL 许可
+    │   ├── assets/fonts/         Inter、OFL 许可与字体下载清单（IBM Plex、Noto Serif 首次使用时下载）
     │   ├── references/
     │   ├── scripts/
     │   └── motion-template/

@@ -31,8 +31,8 @@ Thumbs.db
 *.ttf
 *.woff
 *.woff2
-!skills/lead-media-edit/assets/fonts/*.otf
-!skills/lead-media-edit/assets/fonts/*.ttf
+
+!skills/lead-media-edit/assets/fonts/Inter-*.ttf
 *.pt
 *.pth
 bundle/

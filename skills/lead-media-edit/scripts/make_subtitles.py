@@ -13,7 +13,7 @@ python make_subtitles.py --words transcript_rough.json --text subtitle_text.txt 
 
 subtitle_text.txt：成片里实际说出的话（已改正识别错字、数字用阿拉伯数字），按句写，保留标点。
     可以省略不影响意思的口头填充词，但不能改写观点。
---font 默认用本 skill 自带的 assets/fonts/IBMPlexSansSC-SemiBold.otf，无需每次查找字体位置。
+--font 默认用 assets/fonts/IBMPlexSansSC-SemiBold.otf；字体不随 skill 分发，缺失时自动在线下载（见 fetch_fonts.py），无需每次查找字体位置。
 terms.txt（可选）：每行一个不允许被拆开的词（专有名词、成语、数字+单位）。
 
 断句规则（与 video-rough-cut 的字幕规范一致）：
@@ -33,7 +33,6 @@ import sys
 import jieba
 from fontTools.ttLib import TTFont
 
-DEFAULT_FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "fonts", "IBMPlexSansSC-SemiBold.otf")
 
 PUNCT = "，。！？；：、,.!?;:…—“”\"'‘’（）()《》 "
 STRONG_END = "。！？!?"
@@ -232,7 +231,7 @@ def main():
     ap.add_argument("--words", required=True)
     ap.add_argument("--text", required=True)
     ap.add_argument("--out-dir", required=True)
-    ap.add_argument("--font", default=os.path.normpath(DEFAULT_FONT))
+    ap.add_argument("--font", default=None)
     ap.add_argument("--fontname", default="IBM Plex Sans SC SmBld")
     ap.add_argument("--terms")
     ap.add_argument("--layout", choices=sorted(LAYOUTS), default="landscape")
@@ -252,6 +251,9 @@ def main():
     if a.pos_y:
         L["y"] = a.pos_y
     a.max_width = L["max_width"]
+    if a.font is None:
+        from fetch_fonts import ensure
+        a.font = ensure("IBMPlexSansSC-SemiBold.otf")
     metric = Metric(a.font, L["size"])
 
     raw = open(a.text, encoding="utf-8").read()

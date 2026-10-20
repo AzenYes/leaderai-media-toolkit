@@ -5,7 +5,7 @@ python final_compose.py --video broll_master.mp4 --audio mix.wav --ass 字幕.as
     [--fonts-dir fonts]
     [--I -16] [--TP -1.5] [--encoder auto]
 
---fonts-dir 可选：默认只用本 skill assets/fonts/ 里的 IBMPlexSansSC-SemiBold.otf（不把整个字体库拷进临时目录）。
+--fonts-dir 可选：默认只用 assets/fonts/ 里的 IBMPlexSansSC-SemiBold.otf（不把整个字体库拷进临时目录；字体缺失时自动在线下载）。
 --audio 可选：给出时用它（mix_audio.py 的混音结果）替换母版里的音轨。
 
 - 为避免中文路径/冒号在滤镜里转义出错，把 ASS 和字体复制到临时 ASCII 目录再烧录。
@@ -19,8 +19,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-
-DEFAULT_FONTS_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "fonts"))
 
 
 def probe_fps(path):
@@ -40,7 +38,7 @@ def main():
     ap.add_argument("--video", required=True)
     ap.add_argument("--audio")
     ap.add_argument("--ass", required=True)
-    ap.add_argument("--fonts-dir", default=DEFAULT_FONTS_DIR)
+    ap.add_argument("--fonts-dir", default=None)
     ap.add_argument("--out", required=True)
     ap.add_argument("--I", type=float, default=-16)
     ap.add_argument("--TP", type=float, default=-1.5)
@@ -66,9 +64,10 @@ def main():
     tmp = tempfile.mkdtemp(prefix="koubo_")
     try:
         shutil.copy(a.ass, os.path.join(tmp, "sub.ass"))
-        if os.path.normpath(a.fonts_dir) == DEFAULT_FONTS_DIR:
+        if a.fonts_dir is None:
+            from fetch_fonts import ensure
             os.makedirs(os.path.join(tmp, "fonts"))
-            shutil.copy(os.path.join(DEFAULT_FONTS_DIR, "IBMPlexSansSC-SemiBold.otf"), os.path.join(tmp, "fonts"))
+            shutil.copy(ensure("IBMPlexSansSC-SemiBold.otf"), os.path.join(tmp, "fonts"))
         else:
             shutil.copytree(a.fonts_dir, os.path.join(tmp, "fonts"), ignore=shutil.ignore_patterns("*.txt", "*.md"))
         cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "verbose", "-i", video, "-i", audio,

@@ -1,6 +1,6 @@
 {
   "name": "leaderai-media-toolkit",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "LeaderAI自媒体工具包：口播文案、口播剪辑与知识讲解动画 skill",
   "author": { "name": "AzenYes", "url": "https://github.com/AzenYes" },
   "homepage": "https://github.com/AzenYes/leaderai-media-toolkit",

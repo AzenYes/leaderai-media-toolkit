@@ -16,7 +16,7 @@ npm ci
 npm run typecheck
 ```
 
-在 `public/` 放入 `rough.mp4`。以下完整字体已随 skill 存放于 `assets/fonts/`，由 skill 的 `scripts/subset_fonts.py` 按当前工程用字生成到 `public/fonts/`：
+在 `public/` 放入 `rough.mp4`。以下字体位于 skill 的 `assets/fonts/`（Inter 随 skill 分发，其余首次使用时由脚本自动下载），由 skill 的 `scripts/subset_fonts.py` 按当前工程用字生成到 `public/fonts/`：
 
 ```text
 NotoSerifSC-VF.ttf
@@ -32,7 +32,7 @@ Inter-SemiBold.ttf
 python <已安装skill目录>/scripts/subset_fonts.py <动效工程目录>
 ```
 
-脚本默认从 skill 的 `assets/fonts/` 查找 `src/engine/fonts.ts` 登记的文件，无需传字体参数。官方来源：[IBM Plex](https://github.com/IBM/plex)、[Noto CJK](https://github.com/notofonts/noto-cjk)、[Inter](https://github.com/rsms/inter)。完整许可附在 `assets/fonts/OFL-*.txt`；分发字体或子集时保留相关许可及声明。增加字重时先在 `src/engine/fonts.ts` 登记，再重新子集化。缺少字体会中止渲染，不会静默换字体。
+脚本默认从 skill 的 `assets/fonts/` 查找 `src/engine/fonts.ts` 登记的文件，缺失的会先下载，无需传字体参数。官方来源：[IBM Plex](https://github.com/IBM/plex)、[Noto CJK](https://github.com/notofonts/noto-cjk)、[Inter](https://github.com/rsms/inter)。完整许可附在 `assets/fonts/OFL-*.txt`；分发字体或子集时保留相关许可及声明。增加字重时先在 `src/engine/fonts.ts` 登记，再重新子集化。字体下载失败或缺失会中止，不会静默换字体；网络不通时见 `assets/fonts/README.md` 手动安装。
 
 修改 `src/project.ts` 和场景后，可运行 `npm run studio` 预览。仍需先准备视频与字体。实际视频制作、静帧检查、音效混合与最终导出按上一级 `SKILL.md` 执行。
 

@@ -2,7 +2,21 @@
 
 工具包按 Git 标签和 GitHub Release 发布；各 skill 的版本分别记录在其 `SKILL.md` 的 `metadata.version` 中。仅修改工具包文档时，不必同步提升所有 skill 的版本。
 
-## v1.4.0 — 2026-10-20（主分支）
+## v1.4.1 — 2026-10-20（主分支）
+
+「Lead-自媒体口播剪辑」**1.2.2**：字体改为首次使用时在线下载，skill 目录从约 79 MB 缩到约 1.8 MB。「Lead-自媒体口播文案」**1.1.1**、「Lead-知识讲解动画」**1.0.0** 无变化。
+
+- 从仓库移除 IBM Plex Sans SC 的 8 个 OTF 和 Noto Serif SC 可变字体（约 80 MB）；保留体积很小的 Inter（约 0.6 MB）和三份 OFL 许可原文。
+- 新增 `assets/fonts/fonts.json`（下载清单）和 `scripts/fetch_fonts.py`（`--check` / `--fetch` / `--fetch --all` / `--install`）。IBM Plex Sans SC 固定为 1.1.0，Noto Serif SC 固定为 notofonts/noto-cjk 的 Serif2.003 标签；默认只下载 3 个必需字体（SemiBold、Medium、Noto Serif SC，约 40 MB），6 个备用字重用 `--all` 按需下载。
+- `make_subtitles.py`、`final_compose.py`、`subset_fonts.py` 在字体缺失时自动下载；下载失败会列出地址并退出，不会静默换字体。`--font` / `--fonts-dir` 显式指定的用法不变。
+- 字体来源变化：Noto Serif SC 原随附的是 2.02 构建，下载的是上游 Serif2.003 标签的同名可变字体（同为 200–900 字重轴、31058 个字形），但构建版本不同、文件哈希不同；IBM Plex 的 SemiBold 与 Medium 哈希与原随附文件一致。
+- 同步更新 SKILL、字幕规范、动效模板 README、字体说明、两份 THIRD_PARTY_NOTICES、README 与 CONTRIBUTING；插件清单版本升至 1.4.1。
+
+**注意**：已有提交历史仍含这些字体文件，所以 `git clone` 的体积不会因此变小，变小的是 skill 目录（插件安装与手动复制得到的内容）。没有改写历史，已发布的标签保持不变。使用前需要能访问 GitHub；网络不通时按 `assets/fonts/README.md` 手动安装。
+
+验证：在清空字体的状态下运行 `make_subtitles.py`，自动下载 SemiBold 并成功生成字幕；运行 `subset_fonts.py` 自动下载 Medium 与 Noto Serif SC 并完成 5 个字体的子集化；`fetch_fonts.py --check` 输出正常；全部 Python 脚本语法检查通过。本次未重新运行原片到成片的完整剪辑，也未运行 Remotion 渲染与 `final_compose.py` 烧录（该脚本使用同一个 `ensure()`，改动同 `make_subtitles.py`）。
+
+## v1.4.0 — 2026-10-20
 
 新增第三个 skill「Lead-知识讲解动画」**1.0.0**（`lead-knowledge-animation`）；「Lead-自媒体口播文案」**1.1.1**、「Lead-自媒体口播剪辑」**1.2.1** 无变化。
 
