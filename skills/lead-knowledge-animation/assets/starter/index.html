@@ -6,7 +6,7 @@
 <!--
   布线示例（wiring）：演示发光线描式知识动画的基本接法——
   字幕时间轴(timing.js，timeline.py 生成) + kit.js 六层结构 + 一句一个视觉节拍 + 冷开场 → 片名卡。
-  这里的金色配色、三柱站台、人形只是“接法示范”：主色相、主体、构图都必须按本片重设。
+  这里的金色配色、三柱站台、材质球只是“接法示范”：主色相、主体、构图都必须按本片重设。
   大片子按章节拆成 s1.js / s2.js …（每个文件往 SCENES 里 push 一个 (t)=>{}）。风格说明见 references/风格范式.md。
 -->
 <style>
@@ -63,11 +63,11 @@ SCENES.push((t) => {
     c.fillStyle = g; c.fillRect(x - 110, y, 220, H - y); c.strokeStyle = K.rgba(col, .8 * lit); c.lineWidth = 1.5; c.strokeRect(x - 110, y, 220, H - y + 10);
     c.font = '700 72px Plex'; c.textAlign = 'center'; c.fillStyle = K.rgba(col, .85 * lit); c.fillText(n, x, y + 90);
   });
-  // 主体动作：两侧的人举臂，居中的站着不动——动作对比就是这句话的意思
+  // 主体动作：两侧的球升起，居中的不动——动作对比就是这句话的意思（主体按本片文案重选，不默认用人形）
   const up = prog(t, o2.start, o2.start + .6, E.outBack);
-  K.figure(c, CX - 260, H * .78, 1, 'stand', 0, { color: '#cfdcf5', a: prog(t, o1.start, o1.start + .6) });
-  K.figure(c, CX, H * .72, 1.1, up > .5 ? 'win' : 'stand', 0, { color: '#ffd27a', core: true, a: prog(t, o1.start + .25, o1.start + .85) });
-  K.figure(c, CX + 260, H * .82, .95, up > .5 ? 'win' : 'stand', 0, { color: '#ffb27a', a: prog(t, o1.start + .5, o1.start + 1.1) });
+  K.orb(c, CX - 260, H * .78 - 70 - 40 * up, 60, { color: '#9fb3d6', a: prog(t, o1.start, o1.start + .6), t });
+  K.orb(c, CX, H * .72 - 80, 72, { color: '#ffd27a', a: prog(t, o1.start + .25, o1.start + .85), t });
+  K.orb(c, CX + 260, H * .82 - 60 - 40 * up, 52, { color: '#d08a5c', a: prog(t, o1.start + .5, o1.start + 1.1), t });
   K.callout(c, CX - 260, H * .78 - 200, -120, -40, 'LABEL', prog(t, o2.start + .6, o2.start + 1.4), { sub: '示意标注', len: 110 });
   c.restore();
 });

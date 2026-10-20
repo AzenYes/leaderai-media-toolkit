@@ -9,7 +9,7 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 工具包从口播创作出发，现包含「口播文案」「口播剪辑」「知识讲解动画」三个创作 skill，另有一个「一键更新」skill：前两个处理有人出镜的口播，第三个从一个选题直接做出无需配音、无需素材的讲解动画，「一键更新」只负责把已安装的工具包更新到最新发布版本。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前主分支版本：**v1.5.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
+> 当前主分支版本：**v1.6.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
 
 ## 现在能做什么
 
@@ -17,7 +17,7 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 | --- | --- | --- | --- |
 | [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.1 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
 | [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.2 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，所需字体首次使用时自动下载 |
-| [Lead-知识讲解动画](skills/lead-knowledge-animation/SKILL.md) | `lead-knowledge-animation` | 1.0.0 | 一个知识选题或一句想法 → 发光线描式讲解动画 MP4（无配音，底部单行字幕即旁白，配音乐与音效）、字幕稿、分镜与出处记录、可再修改的动画工程 |
+| [Lead-知识讲解动画](skills/lead-knowledge-animation/SKILL.md) | `lead-knowledge-animation` | 1.1.0 | 一个知识选题或一句想法 → 发光线描式讲解动画 MP4（无配音，底部单行字幕即旁白，配音乐与音效）、字幕稿、分镜与出处记录、可再修改的动画工程 |
 | [LeaderAI自媒体工具包一键更新](skills/leaderai-toolkit-update/SKILL.md) | `leaderai-toolkit-update` | 1.0.0 | 一句“更新工具包” → 检测安装方式（插件 / Git 克隆 / 手动复制），更新到 GitHub 最新发布版本，并报告版本变化与更新内容 |
 
 ### 口播文案

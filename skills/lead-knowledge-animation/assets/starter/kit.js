@@ -487,7 +487,8 @@
     // ───────────── 有材质的插画式主体（“主角”：有体积、高光、边缘光，占画面 30–60%）
     /** 材质球 / 细胞 / 星体：K.orb(c, x, y, r, {color, a, light:[-.4,-.45], spec, rim, nucleus, membrane, rx, ry, rot, t})
      *  - color 主色；light 光源方向（相对半径）；spec 高光强度；rim 边缘光；nucleus: {r, dx, dy, color}；
-     *  - membrane: 边上一圈亮点（细胞膜/通道）；rx/ry 椭圆比例；rot 旋转；t 让膜上亮点缓慢流动 */
+     *  - atmo 大气辉光（默认 .6）：贴着球缘一圈连续、柔和的整体高亮，像从太空看地球的大气层；0 关闭
+     *  - membrane: 细胞膜——一条贴边的连续细亮线（不撒亮点，避免“毛刺”）；rx/ry 椭圆比例；rot 旋转；t 让亮度沿膜缓慢流动 */
     K.orb = (c, x, y, r, o2 = {}) => {
       const a = o2.a ?? 1; if (a <= .003 || r <= 1) return; const col = M.hex(o2.color || P.accent), L2 = o2.light || [-.38, -.42];
       const ga = c.globalAlpha; c.save(); c.translate(x, y); c.rotate(o2.rot || 0); c.scale(o2.rx || 1, o2.ry || 1);
@@ -499,8 +500,12 @@
       if (o2.nucleus) { const n = o2.nucleus, nc = M.hex(n.color || M.rgba(dark)); const ng = c.createRadialGradient((n.dx || 0) * r - n.r * r * .3, (n.dy || 0) * r - n.r * r * .3, 0, (n.dx || 0) * r, (n.dy || 0) * r, n.r * r); ng.addColorStop(0, M.rgba(M.mixColor(nc, [255, 255, 255], .25), .75)); ng.addColorStop(1, M.rgba(nc, .65)); c.fillStyle = ng; c.beginPath(); c.arc((n.dx || 0) * r, (n.dy || 0) * r, n.r * r, 0, TAU); c.fill(); }
       // 高光与边缘光
       const sp = o2.spec ?? 1; if (sp > 0) { K.spr(c, 'white', L2[0] * r * .9, L2[1] * r * .9, r * .55, .55 * sp); K.spr(c, 'white', L2[0] * r * .9, L2[1] * r * .9, r * .14, .9 * sp); }
-      const rim = o2.rim ?? .8; c.lineWidth = Math.max(1.2, r * .012); c.strokeStyle = M.rgba(M.mixColor(col, [255, 255, 255], .6), .7 * rim); c.beginPath(); c.arc(0, 0, r, 0, TAU); c.stroke();
-      if (o2.membrane) { const n = o2.membrane === true ? 64 : o2.membrane; for (let i = 0; i < n; i++) { const q = i / n * TAU + (o2.t || 0) * .05 + M.hash(i, 9) * .08; const rr = r * (1 + (M.hash(i, 3) - .5) * .02); K.spr(c, 'white', Math.cos(q) * rr, Math.sin(q) * rr, 3 + 4 * M.hash(i, 5), .55 + .45 * Math.sin((o2.t || 0) * 2 + i)); } }
+      const lite = M.mixColor(col, [255, 255, 255], .6), rim = o2.rim ?? .6;
+      // 大气辉光：一圈连续的柔光带，球缘最亮、向外平滑衰减；向光一侧略亮
+      const atmo = o2.atmo ?? .6; if (atmo > 0) { const ag = c.createRadialGradient(0, 0, r * .94, 0, 0, r * 1.22); ag.addColorStop(0, M.rgba(lite, 0)); ag.addColorStop(.21, M.rgba(lite, .22 * atmo)); ag.addColorStop(.4, M.rgba(col, .12 * atmo)); ag.addColorStop(1, M.rgba(col, 0)); c.fillStyle = ag; c.beginPath(); c.arc(0, 0, r * 1.22, 0, TAU); c.arc(0, 0, r * .94, 0, TAU, true); c.fill();
+        const sg = c.createLinearGradient(L2[0] * r, L2[1] * r, -L2[0] * r, -L2[1] * r); sg.addColorStop(0, M.rgba(lite, .16 * atmo)); sg.addColorStop(.6, M.rgba(lite, 0)); c.strokeStyle = sg; c.lineWidth = Math.max(2, r * .035); c.beginPath(); c.arc(0, 0, r * .99, 0, TAU); c.stroke(); }
+      if (rim > 0) { c.lineWidth = Math.max(1, r * .008); c.strokeStyle = M.rgba(lite, .45 * rim); c.beginPath(); c.arc(0, 0, r, 0, TAU); c.stroke(); }
+      if (o2.membrane) { const mg = c.createConicGradient ? c.createConicGradient((o2.t || 0) * .4, 0, 0) : null; if (mg) { mg.addColorStop(0, M.rgba(lite, .4)); mg.addColorStop(.5, M.rgba(lite, .12)); mg.addColorStop(1, M.rgba(lite, .4)); } c.strokeStyle = mg || M.rgba(lite, .4); c.lineWidth = Math.max(1.5, r * .014); c.beginPath(); c.arc(0, 0, r * 1.008, 0, TAU); c.stroke(); }
       c.restore();
     };
     /** 神经元 / 树突 / 闪电 / 河网：预生成的分枝结构（加载时调用一次），返回 {segs, draw(c, x, y, p, {color, a, w, pulse, t})}
