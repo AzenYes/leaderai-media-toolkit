@@ -1,0 +1,3 @@
+interface:
+  display_name: "LeaderAI自媒体工具包一键更新"
+  short_description: "一键把已安装的 LeaderAI 自媒体工具包更新到 GitHub 上最新的发布版本"

@@ -7,9 +7,9 @@
 
 LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills 集合。每个 skill 包含明确的任务流程、交付标准，以及完成任务所需的参考资料、脚本或模板。你可以只安装需要的一个，也可以组合使用。
 
-工具包从口播创作出发，现包含「口播文案」「口播剪辑」「知识讲解动画」三个 skill：前两个处理有人出镜的口播，第三个从一个选题直接做出无需配音、无需素材的讲解动画。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
+工具包从口播创作出发，现包含「口播文案」「口播剪辑」「知识讲解动画」三个创作 skill，另有一个「一键更新」skill：前两个处理有人出镜的口播，第三个从一个选题直接做出无需配音、无需素材的讲解动画，「一键更新」只负责把已安装的工具包更新到最新发布版本。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前主分支版本：**v1.4.1**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
+> 当前主分支版本：**v1.5.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
 
 ## 现在能做什么
 
@@ -18,6 +18,7 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 | [Lead-自媒体口播文案](skills/lead-media-script/SKILL.md) | `lead-media-script` | 1.1.1 | 一句话想法、选题或素材 → 纯口播 TXT、执行方案 MD（含开头候选、标题封面、录制提示与事实待补项） |
 | [Lead-自媒体口播剪辑](skills/lead-media-edit/SKILL.md) | `lead-media-edit` | 1.2.2 | 已录制口播视频，可附文案 → 粗剪、动态讲解画面、圆环人物画中画、音效、单行字幕、成片及剪辑说明；支持横版与竖版，所需字体首次使用时自动下载 |
 | [Lead-知识讲解动画](skills/lead-knowledge-animation/SKILL.md) | `lead-knowledge-animation` | 1.0.0 | 一个知识选题或一句想法 → 发光线描式讲解动画 MP4（无配音，底部单行字幕即旁白，配音乐与音效）、字幕稿、分镜与出处记录、可再修改的动画工程 |
+| [LeaderAI自媒体工具包一键更新](skills/leaderai-toolkit-update/SKILL.md) | `leaderai-toolkit-update` | 1.0.0 | 一句“更新工具包” → 检测安装方式（插件 / Git 克隆 / 手动复制），更新到 GitHub 最新发布版本，并报告版本变化与更新内容 |
 
 ### 口播文案
 
@@ -60,7 +61,7 @@ Skill 的 `name` 使用中文（「Lead-自媒体口播文案」「Lead-自媒�
 /plugin install leaderai-media-toolkit@leaderai
 ```
 
-三个 skill 会一起安装，重启 Claude Code 后生效。以后获取新版本：
+四个 skill 会一起安装，重启 Claude Code 后生效。以后获取新版本，可以直接对 Agent 说“更新工具包”（使用「LeaderAI自媒体工具包一键更新」），或手动运行：
 
 ```text
 /plugin marketplace update leaderai
@@ -185,12 +186,14 @@ leaderai-media-toolkit/
     │   ├── references/
     │   ├── scripts/
     │   └── motion-template/
-    └── lead-knowledge-animation/
-        ├── SKILL.md
-        ├── requirements.txt
-        ├── assets/               引擎起手件（starter）、世界地图数据；字体清单与 BGM 说明（字体、音频不入库）
-        ├── references/           风格范式、字幕规范、视觉系统、工程契约等
-        └── scripts/              建工程、渲染、时间轴、混音、质检脚本
+    ├── lead-knowledge-animation/
+    │   ├── SKILL.md
+    │   ├── requirements.txt
+    │   ├── assets/               引擎起手件（starter）、世界地图数据；字体清单与 BGM 说明（字体、音频不入库）
+    │   ├── references/           风格范式、字幕规范、视觉系统、工程契约等
+    │   └── scripts/              建工程、渲染、时间轴、混音、质检脚本
+    └── leaderai-toolkit-update/
+        └── SKILL.md              一键更新到最新发布版本（只有流程，无脚本与依赖）
 ```
 
 新增能力时，在 `skills/<英文目录>/` 下加入独立的 `SKILL.md` 和所需资源，再更新上方目录、插件版本及版本记录。工具包通过 Git 标签和 Release 发布，各 skill 在 `SKILL.md` 的 `metadata.version` 中记录自身版本。扩展约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。

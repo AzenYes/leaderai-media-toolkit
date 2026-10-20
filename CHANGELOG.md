@@ -2,7 +2,18 @@
 
 工具包按 Git 标签和 GitHub Release 发布；各 skill 的版本分别记录在其 `SKILL.md` 的 `metadata.version` 中。仅修改工具包文档时，不必同步提升所有 skill 的版本。
 
-## v1.4.1 — 2026-10-20（主分支）
+## v1.5.0 — 2026-10-20（主分支）
+
+新增第四个 skill「LeaderAI自媒体工具包一键更新」**1.0.0**（`leaderai-toolkit-update`）；「Lead-自媒体口播文案」**1.1.1**、「Lead-自媒体口播剪辑」**1.2.2**、「Lead-知识讲解动画」**1.0.0** 无变化。
+
+- 新增 `skills/leaderai-toolkit-update/`：只做一件事，把已安装的工具包更新到 GitHub 上最新的发布版本。先查最新 Release，再识别安装方式（Claude Code 插件、Git 克隆、手动复制的 skill 文件夹），按方式更新并重新核对版本，最后报告新旧版本、更新内容与是否需要重启。
+- 安全边界：只认已发布的 Release，不用主分支和预发布；下载内容只读取、复制，不运行其中脚本；手动复制采用覆盖而非先删除，保留各 skill 首次使用时下载的字体与音乐，并先备份被覆盖的旧文件夹；Git 克隆有未提交修改时停止；不安装本机原本没有的 skill，也不安装依赖。
+- 仅含 `SKILL.md`、`agents/openai.yaml` 与 `LICENSE`，无脚本和依赖。
+- README 目录、安装与更新说明、项目结构同步；插件清单与市场清单版本升至 1.5.0，描述加入一键更新。
+
+验证：`claude plugin validate` 对插件清单与市场清单通过；已检查 frontmatter 格式、中文名与 `metadata.display-name` 一致，以及 README 中的链接目标；查询最新发布版本的 GitHub API 与 `git ls-remote` 标签两条路径对本仓库均实际可用（当前最新为 v1.4.1）。本次未在真实的旧版本安装上完整跑一遍更新流程，该 skill 尚未经过真实更新演练。
+
+## v1.4.1 — 2026-10-20
 
 「Lead-自媒体口播剪辑」**1.2.2**：字体改为首次使用时在线下载，skill 目录从约 79 MB 缩到约 1.8 MB。「Lead-自媒体口播文案」**1.1.1**、「Lead-知识讲解动画」**1.0.0** 无变化。
 

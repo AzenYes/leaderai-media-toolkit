@@ -6,8 +6,8 @@
     {
       "name": "leaderai-media-toolkit",
       "source": "./",
-      "description": "LeaderAI自媒体工具包：口播文案、口播剪辑与知识讲解动画 skill",
-      "version": "1.4.1"
+      "description": "LeaderAI自媒体工具包：口播文案、口播剪辑、知识讲解动画与一键更新 skill",
+      "version": "1.5.0"
     }
   ]
 }
