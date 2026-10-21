@@ -16,7 +16,7 @@ const skill = path.resolve(here, '..');
 const film = path.resolve(dir, 'film');
 if (fs.existsSync(path.join(film, 'index.html'))) { console.error('已存在 ' + film + '/index.html，不覆盖'); process.exit(1); }
 fs.mkdirSync(path.join(film, 'fonts'), { recursive: true });
-for (const f of ['motion.js', 'kit.js', 'geo.js']) fs.copyFileSync(path.join(skill, 'assets/starter', f), path.join(film, f));
+for (const f of ['motion.js', 'kit.js', 'geo.js', 'cover.html']) fs.copyFileSync(path.join(skill, 'assets/starter', f), path.join(film, f));
 fs.copyFileSync(path.join(skill, 'assets/geo/world110.js'), path.join(film, 'world110.js'));   // Natural Earth 110m（公有领域）点阵与海岸线
 let html = fs.readFileSync(path.join(skill, 'assets/starter/index.html'), 'utf8');
 const ratio = a.ratio || '16x9';
@@ -44,6 +44,8 @@ const faces = manifest.filter((f) => pick.includes(f.file)).map((f) => `  @font-
 html = html.replace(/  <!-- @fonts -->/, faces);
 fs.writeFileSync(path.join(film, 'index.html'), html);
 for (const d of ['work', 'out']) fs.mkdirSync(path.resolve(dir, d), { recursive: true });
+const copyDoc = path.resolve(dir, 'work/文案与封面.md');
+if (!fs.existsSync(copyDoc)) fs.copyFileSync(path.join(skill, 'assets/starter/copy_template.md'), copyDoc);
 const lines = path.resolve(dir, 'work/lines.json');
 if (!fs.existsSync(lines)) fs.writeFileSync(lines, JSON.stringify({ start: 0.3, tail: 2.5, lines: [
   { id: 'o1', text: '开头金句：一个[反常识]的结论', hook: true },
@@ -59,5 +61,6 @@ console.log(`已创建 ${film}（${ratio}）
   字体：${pick.length} 个（Plex = IBM Plex Sans SC，HanSerif = 思源宋体；已子集化，改了屏上文字后重跑 fonts.py）
   字幕字体：按内容在 Plex 与 HanSerif 之间选（lines.json 顶层或单句 "font": "sans" | "serif"）
   字幕稿模板：work/lines.json（写好后跑 timeline.py 生成 film/timing.js）
+  封面：film/cover.html（横版 4K + 竖版 4K，代码绘制）；文案模板 work/文案与封面.md；成片后跑 cover.mjs 出图
   预览：浏览器直接打开 film/index.html（空格播放、←/→ 逐帧、Shift+←/→ 1 秒、L 循环当前场景）
   ⚠ index.html 是布线示例：视觉系统（palette、环境、主体画法、字体）必须按方向重设`);
