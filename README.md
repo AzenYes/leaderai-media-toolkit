@@ -9,7 +9,7 @@ LeaderAI自媒体工具包是一个面向自媒体创作者的开源 AI Skills �
 
 工具包从口播创作出发，现包含「口播文案」「口播剪辑」「知识讲解动画」三个创作 skill，另有一个「一键更新」skill：前两个处理有人出镜的口播，第三个从一个选题直接做出无需配音、无需素材的讲解动画，「一键更新」只负责把已安装的工具包更新到最新发布版本。后续会在同一个工具包中继续增加创作能力；现有 skill 保持独立，按各自版本迭代。
 
-> 当前主分支版本：**v1.7.0**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
+> 当前主分支版本：**v1.7.1**；已发布版本见 [Releases](https://github.com/AzenYes/leaderai-media-toolkit/releases)。Skill 需要由支持 `SKILL.md` 的 AI Agent 加载执行；剪辑与知识讲解动画还需要本地视频处理环境。
 
 ## 现在能做什么
 
