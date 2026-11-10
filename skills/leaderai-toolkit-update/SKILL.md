@@ -1,5 +1,5 @@
 ---
-name: LeaderAI自媒体工具包一键更新
+name: leaderai-toolkit-update
 description: 把用户已安装的 LeaderAI 自媒体工具包（Lead-自媒体口播文案、Lead-自媒体口播剪辑、Lead-知识讲解动画等）更新到 GitHub 上最新的发布版本（Release）。只做“拉取最新发布版本”这一件事。当用户说“更新工具包”“更新 LeaderAI 工具包”“LeaderAI自媒体工具包一键更新”“拉取最新版本”“工具包有没有新版本”“升级 Lead 系列 skill”时使用。
 license: MIT
 metadata:
